@@ -5,7 +5,7 @@ function App() {
   const [snakeSegments, setSnakeSegments] = useState([{ x: 1, y: 1 }]);
   const [direction, setDirection] = useState("right");
   const [nextDirection, setNextDirection] = useState("right");
-  const [snakeSpeed, setSnakeSpeed] = useState(150); // Adjust for speed/responsiveness
+  const [snakeSpeed, setSnakeSpeed] = useState(150); // Adjust for speed
   const [gameOver, setGameOver] = useState(false);
   const [apple, setApple] = useState(generateRandomApplePosition());
 
@@ -13,7 +13,7 @@ function App() {
     const handleKeyDown = (e) => {
       switch (e.key) {
         case "ArrowUp":
-          // using if statement to prevent snake from going in the opposite direction
+          // condition to prevent snake from going in the opposite direction
           if (direction !== "down") setNextDirection("up");
           break;
         case "ArrowDown":
@@ -45,7 +45,7 @@ function App() {
     const moveSnake = () => {
       const head = { ...snakeSegments[0] };
 
-      // using if statement to prevent snake from going in the opposite direction
+      // condition to prevent snake from going in the opposite direction
       if (
         (nextDirection === "up" && direction !== "down") ||
         (nextDirection === "down" && direction !== "up") ||
@@ -73,13 +73,13 @@ function App() {
           break;
       }
 
-      // to check if snake hits the wall
+      // checking if snake hits the wall
       if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 20) {
         setGameOver(true);
         return;
       }
 
-      // to check if snake hits itself
+      // checking if snake hits itself
       for (let i = 1; i < snakeSegments.length; i++) {
         if (head.x === snakeSegments[i].x && head.y === snakeSegments[i].y) {
           setGameOver(true);
@@ -87,7 +87,7 @@ function App() {
         }
       }
 
-      // to check if snake eats apple
+      // checking if snake eats apple
       if (head.x === apple.x && head.y === apple.y) {
         const newSegment = { ...snakeSegments[snakeSegments.length - 1] };
         snakeSegments.push(newSegment);
@@ -95,12 +95,11 @@ function App() {
         setApple(generateRandomApplePosition());
       }
 
-      // the last segment is removed to ensure that the snake moves forward without getting longer
+      // last segment is removed to ensure that the snake moves forward without getting longer
       const newSnakeSegments = [head, ...snakeSegments.slice(0, -1)];
       setSnakeSegments(newSnakeSegments);
     };
 
-    // to make snake move automatically on given speed
     const intervalId = setInterval(moveSnake, snakeSpeed);
 
     return () => {
